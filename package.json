@@ -1,6 +1,6 @@
 {
   "name": "dll-cache-version-plugin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "guochengwei",
   "description": "",
   "files": [
@@ -11,8 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/guochengwei/dll-cache-version-plugin.git"
   },
-  "keywords": [
-  ],
+  "keywords": [],
   "main": "src/index.js",
   "dependencies": {},
   "devDependencies": {
