@@ -1,6 +1,6 @@
 const path = require('path')
 
-class DllCacheVersionPlugin {
+class ServiceWorkerPlugin {
   constructor (options) {
     this.options = options || {}
   }
@@ -8,21 +8,23 @@ class DllCacheVersionPlugin {
   apply (compiler) {
     if (compiler.hooks) {
       // webpack4.x API
-      compiler.hooks.emit.tapAsync('DllCacheVersionPlugin', (compilation, cb) => {
+      compiler.hooks.emit.tapAsync('DllCacheVersionPlugins', (compilation, cb) => {
         const outputPath = path.join(compiler.options.output.path, './dllCacheVersion.json')
         let version
         if (this.options.chunkHash) {
-          version = JSON.stringify(compilation.chunks.reduce((obj, chunk) => {
+          version = compilation.chunks.reduce((obj, chunk) => {
             obj[chunk.name] = chunk.hash
             return obj
-          }, {}))
-          version = version.slice(0, version.length)
+          }, {})
         } else {
           version = compilation.hash
         }
+        const json = JSON.stringify({
+          dllCacheVersion: version
+        })
         compiler.outputFileSystem.writeFile(
           outputPath,
-          Buffer.from('{ "dllCacheVersion": ' + version + ' }', 'utf8'),
+          Buffer.from(json, 'utf8'),
           cb)
       })
     } else {
@@ -31,4 +33,4 @@ class DllCacheVersionPlugin {
   }
 }
 
-module.exports = DllCacheVersionPlugin
+module.exports = ServiceWorkerPlugin
